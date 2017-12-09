@@ -23,15 +23,15 @@ module AleAir
     end
 
     def get_info(document = nil)
+      @status = "error"
       unless document.nil?
         if document["status"] == "ok"
 	  if document["data"].length > 0
             document["data"].each do |air|
 	      if !air["aqi"].nil? || !air["aqi"].empty?
 		unless is_int(air["aqi"])
-		  @status = "error"
 	          @message = "Invalid Airquality Value"
-		  return true
+		  return false
 	        end	  
 		@status = "ok"
 		@message = "Air Quality"
@@ -41,16 +41,13 @@ module AleAir
 		@danger_level = danger_lev(air["aqi"].to_i)
 	        return true
 	      else
-		@status = "error"
 		@message = "No Data Available"
               end
             end
 	  else
-	    @status = "error"
 	    @message = "No Stations Found"
 	  end
 	else
-          @status = "error"
           if document["message"]
 	    @message = document["message"]
 	  else

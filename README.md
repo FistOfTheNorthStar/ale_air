@@ -4,7 +4,6 @@ This is an easy to use Gem for your Ruby projects when you wish to add air quali
 
 ## Installation
 
-The gem is not live YET
 Add this to Gemfile:
 
 ```ruby
@@ -20,6 +19,23 @@ Or
     $ gem install ale_air
 
 ## Usage
+
+Just initialize first with your token
+
+    air_results = air_quality = AleAir::FetchJSON.new('YOUR_TOKEN')
+
+Now you can get the air quality where you wish. This will return true if succesful and false if some error occured
+
+    air_results.air_quality('Helsinki')
+
+Then you can just use the results
+
+    air_results.status -- will return "ok" or "error"
+    air_results.message -- what kind of error occured
+    air_results.location -- the measurement station location
+    air_results.quality -- Air Quality Index scale as defined by the US-EPA 2016
+    air_results.time_measured -- time of measurement
+    air_results.danger_level -- level
 
 ## Development
 
