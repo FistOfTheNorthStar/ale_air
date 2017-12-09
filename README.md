@@ -19,6 +19,9 @@ Or
     $ gem install ale_air
 
 ## Usage
+Add
+
+    require 'ale_air'
 
 Just initialize first with your token
 
@@ -30,12 +33,12 @@ Now you can get the air quality where you wish. This will return true if succesf
 
 Then you can just use the results
 
-    air_results.status -- will return "ok" or "error"
-    air_results.message -- what kind of error occured
-    air_results.location -- the measurement station location
-    air_results.quality -- Air Quality Index scale as defined by the US-EPA 2016
+    air_results.status        -- will return "ok" or "error"
+    air_results.message       -- what kind of error occured
+    air_results.location      -- the measurement station location
+    air_results.quality       -- Air Quality Index scale as defined by the US-EPA 2016
     air_results.time_measured -- time of measurement
-    air_results.danger_level -- level
+    air_results.danger_level  -- level
 
 ## Development
 
