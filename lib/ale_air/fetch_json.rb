@@ -48,10 +48,12 @@ module AleAir
 	    @message = "No Stations Found"
 	  end
 	else
-          if document["message"]
-	    @message = document["message"]
+          
+	  if !document["data"].nil?
+	    @message = document["data"]
 	  else
             @message = "Unknown Error"
+	    @message = document
           end
 	end	  
       end
