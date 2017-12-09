@@ -22,7 +22,7 @@ Or
 
 Just initialize first with your token
 
-    air_results = air_quality = AleAir::FetchJSON.new('YOUR_TOKEN')
+    air_results = AleAir::FetchJSON.new('YOUR_TOKEN')
 
 Now you can get the air quality where you wish. This will return true if succesful and false if some error occured
 
