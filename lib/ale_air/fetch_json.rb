@@ -39,7 +39,7 @@ module AleAir
 		@time_measured = air["time"]["stime"] + ' ' + air["time"]["tz"]
 		@location = air["station"]["name"]
 		@danger_level = danger_lev(air["aqi"].to_i)
-		@irc_string = "Air quality: " + air["aqi"] + " " + danger_lev(air["aqi"].to_i) + " @  " + air["station"]["name"] + " " + @time_measured 
+		@irc_string = "Air quality: " + air["aqi"] + " AQI " + danger_lev(air["aqi"].to_i) + " @ " + air["station"]["name"] + " " + @time_measured 
 	        return true
 	      else
 		@message = "No Data Available"

@@ -19,8 +19,7 @@ Gem::Specification.new do |s|
   s.test_files  = s.files.grep(%r{^(test|spec|features)/})
   s.require_paths = ["lib"]
 
-  s.add_development_dependency('json', '~> 2.1', '>= 2.1.0')
-  s.add_development_dependency('rest-client', '~> 2.0', '>= 2.0.2')
+  s.add_dependency "rest-client"
   s.add_development_dependency "rspec"
   s.add_development_dependency "rake"
   s.add_development_dependency "bundler"
