@@ -1,0 +1,7 @@
+--color
+--require spec_helper
+--format progress
+--profile
+--no-fail-fast
+--order define
+

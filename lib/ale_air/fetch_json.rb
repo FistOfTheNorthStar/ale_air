@@ -4,7 +4,7 @@ require 'rest-client'
 module AleAir
   class FetchJSON
     attr_writer :secret_token
-    attr_reader :status, :message, :time_measured, :location, :quality, :danger_level
+    attr_reader :status, :message, :time_measured, :location, :quality, :danger_level, :irc_string
 
     def initialize(token = nil)
       @secret_token = token
@@ -39,6 +39,7 @@ module AleAir
 		@time_measured = air["time"]["stime"] + ' ' + air["time"]["tz"]
 		@location = air["station"]["name"]
 		@danger_level = danger_lev(air["aqi"].to_i)
+		@irc_string = "Air quality: " + air["aqi"] + " " + danger_lev(air["aqi"].to_i) + " @  " + air["station"]["name"] + " " + @time_measured 
 	        return true
 	      else
 		@message = "No Data Available"
@@ -57,7 +58,7 @@ module AleAir
           end
 	end	  
       end
-      return false
+      false
     end
 
     def danger_lev(aqi=0)

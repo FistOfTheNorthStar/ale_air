@@ -39,7 +39,7 @@ Then you can just use the results
     air_results.quality       -- Air Quality Index scale as defined by the US-EPA 2016
     air_results.time_measured -- time of measurement
     air_results.danger_level  -- level
-
+    air_results.irc_string    -- Ready string with all the info for IRC for example
 ## Development
 
 Install on locally and start developing. 

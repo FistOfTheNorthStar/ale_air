@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency('json', '~> 2.1', '>= 2.1.0')
   s.add_development_dependency('rest-client', '~> 2.0', '>= 2.0.2')
-  s.add_development_dependency('rspec', '~> 3.7', '>= 3.7.0')
+  s.add_development_dependency "rspec"
   s.add_development_dependency "rake"
-  s.add_development_dependency "bundler", "~> 1.6"
+  s.add_development_dependency "bundler"
 end
