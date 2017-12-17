@@ -6,7 +6,7 @@ module AleAir
     attr_writer :secret_token
     attr_reader :status, :message, :time_measured, :location, :quality, :danger_level, :irc_string
 
-    def initialize(token = nil)
+    def initialize(token = '')
       @secret_token = token
     end
 
@@ -49,7 +49,6 @@ module AleAir
 	    @message = "No Stations Found"
 	  end
 	else
-          
 	  if !document["data"].nil?
 	    @message = document["data"]
 	  else

@@ -1,6 +1,6 @@
 --color
 --require spec_helper
---format progress
+--format documentation
 --profile
 --no-fail-fast
 --order define

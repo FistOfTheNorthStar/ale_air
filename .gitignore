@@ -21,3 +21,4 @@ tmp
 *.a
 *.swp
 mkmf.log
+config/key.yml
