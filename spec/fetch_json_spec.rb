@@ -6,8 +6,9 @@ describe 'FetchJSON' do
   
   describe '#danger_lev' do
     
+    let(:fetch_json) {AleAir::FetchJSON.new}   
+    
     it "returns danger level of air string according to aqi" do
-      fetch_json = AleAir::FetchJSON.new
       levels = [0,51,101,151,201,301]
       danger_array = ["Good", "Moderate", "Unhealthy for Sensitive Groups", "Unhealthy", "Very Unhealthy", "Hazardous"]
       danger_array_append = []
@@ -32,34 +33,28 @@ describe 'FetchJSON' do
 
   describe "#get_info" do
 
+    before(:example) do
+      @fetch_json = AleAir::FetchJSON.new
+    end
+
     it 'send correctly formatted hash with status ok' do
       hash_correct = {"status" => "ok", "message" => "all good test", "data" => [{"aqi" => "100", "time" => {"stime" => "19:00", "tz" => "+2"}, "station" => {"name" => "test place"}}]}
       correct_array = ["ok", "Air Quality", "Moderate", "100", "19:00 +2", "test place", "Air quality: 100 AQI Moderate @ test place 19:00 +2"]
-      fetch_json = AleAir::FetchJSON.new
-      got_back = fetch_json.send(:get_info, hash_correct)
-      back_array = []
-      back_array << fetch_json.status
-      back_array << fetch_json.message
-      back_array << fetch_json.quality
-      back_array << fetch_json.location
-      back_array << fetch_json.danger_level
-      back_array << fetch_json.time_measured
-      back_array << fetch_json.irc_string
+      got_back = @fetch_json.send(:get_info, hash_correct)
+      back_array = [@fetch_json.status, @fetch_json.message, @fetch_json.quality, @fetch_json.location, @fetch_json.danger_level, @fetch_json.time_measured, @fetch_json.irc_string]
       expect(got_back).to be true
       expect(correct_array).to match_array(back_array)
     end
 
     it 'send nil hash should receive false' do
       hash_correct = nil
-      fetch_json = AleAir::FetchJSON.new
-      expect(fetch_json.send(:get_info, hash_correct)).to be false
+      expect(@fetch_json.send(:get_info, hash_correct)).to be false
 
     end
 
     it 'send error receive false' do
       hash_correct = {"status" => "error"}
-      fetch_json = AleAir::FetchJSON.new
-      expect(fetch_json.send(:get_info, hash_correct)).to be false
+      expect(@fetch_json.send(:get_info, hash_correct)).to be false
     end
 
   end
