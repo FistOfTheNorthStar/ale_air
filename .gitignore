@@ -22,3 +22,4 @@ tmp
 *.swp
 mkmf.log
 config/key.yml
+.idea/

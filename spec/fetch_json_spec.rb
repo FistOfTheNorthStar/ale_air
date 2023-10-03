@@ -1,16 +1,14 @@
-require 'json'
-require 'rest-client'
+# frozen_string_literal: true
+
 require 'yaml'
 
 describe 'FetchJSON' do
-  
   describe '#danger_lev' do
-    
-    let(:fetch_json) {AleAir::FetchJSON.new}   
-    
-    it "returns danger level of air string according to aqi" do
-      levels = [0,51,101,151,201,301]
-      danger_array = ["Good", "Moderate", "Unhealthy for Sensitive Groups", "Unhealthy", "Very Unhealthy", "Hazardous"]
+    let(:fetch_json) { AleAir::FetchJSON.new }
+
+    it 'returns danger level of air according to aqi' do
+      levels = [0, 51, 101, 151, 201, 301]
+      danger_array = ['Good', 'Moderate', 'Unhealthy for Sensitive Groups', 'Unhealthy', 'Very Unhealthy', 'Hazardous']
       danger_array_append = []
       levels.each do |level|
         danger_array_append << fetch_json.send(:danger_lev, level)
@@ -19,50 +17,50 @@ describe 'FetchJSON' do
     end
   end
 
-  describe '#is_int' do
+  describe '#integer?' do
     fetch_json = AleAir::FetchJSON.new
-    it "returns false on a string without value to convert" do
-      temp_val = "this is just a string"
-      expect(fetch_json.send(:is_int, temp_val)).to be false
+    it 'returns false on a string without value to convert' do
+      temp_val = 'this is just a string'
+      expect(fetch_json.send(:integer?, temp_val)).to be false
     end
 
-    it "returns int from a string" do
-      expect(fetch_json.send(:is_int, "100")).to be true
+    it 'returns int from a string' do
+      expect(fetch_json.send(:integer?, '100')).to be true
     end
   end
 
-  describe "#get_info" do
-
+  describe '#get_info' do
     before(:example) do
       @fetch_json = AleAir::FetchJSON.new
     end
 
     it 'send correctly formatted hash with status ok' do
-      hash_correct = {"status" => "ok", "message" => "all good test", "data" => [{"aqi" => "100", "time" => {"stime" => "19:00", "tz" => "+2"}, "station" => {"name" => "test place"}}]}
-      correct_array = ["ok", "Air Quality", "Moderate", "100", "19:00 +2", "test place", "Air quality: 100 AQI Moderate @ test place 19:00 +2"]
-      got_back = @fetch_json.send(:get_info, hash_correct)
-      back_array = [@fetch_json.status, @fetch_json.message, @fetch_json.quality, @fetch_json.location, @fetch_json.danger_level, @fetch_json.time_measured, @fetch_json.irc_string]
-      expect(got_back).to be true
+      hash_correct = { 'status' => 'ok', 'message' => 'all good test',
+                       'data' => [{ 'aqi' => '100', 'time' => { 'stime' => '19:00', 'tz' => '+2' },
+                                    'station' => { 'name' => 'test place' } }] }
+      correct_array = ['100', '19:00 +2', 'Air Quality', 'Air quality: 100 AQI Moderate @ test place 19:00 +2',
+                       'Moderate', 'ok', 'test place']
+      response = @fetch_json.send(:get_info, hash_correct)
+      back_array = [@fetch_json.status, @fetch_json.message, @fetch_json.quality, @fetch_json.location,
+                    @fetch_json.danger_level, @fetch_json.time_measured, @fetch_json.descriptive_text]
+      expect(response).to be true
       expect(correct_array).to match_array(back_array)
     end
 
     it 'send nil hash should receive false' do
-      hash_correct = nil
+      hash_correct = ''
       expect(@fetch_json.send(:get_info, hash_correct)).to be false
-
     end
 
     it 'send error receive false' do
-      hash_correct = {"status" => "error"}
+      hash_correct = { 'status' => 'error' }
       expect(@fetch_json.send(:get_info, hash_correct)).to be false
     end
-
   end
 
-  describe "#air_quality" do
-
+  describe '#air_quality' do
     it 'returns false with nil key with correct city' do
-      fetch_json = AleAir::FetchJSON.new    
+      fetch_json = AleAir::FetchJSON.new
       expect(fetch_json.air_quality('Helsinki')).to be false
       sleep(5)
     end
@@ -86,8 +84,8 @@ describe 'FetchJSON' do
   end
 
   protected
-  def api_key
-    @config = YAML.load_file("./config/key.yml")
-  end
 
+  def api_key
+    @config = YAML.load_file('./config/key.yml')
+  end
 end
