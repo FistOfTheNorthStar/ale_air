@@ -6,6 +6,7 @@ require 'ale_air/version'
 Gem::Specification.new do |s|
   s.name        = 'ale_air'
   s.version     = AleAir::VERSION
+  s.required_ruby_version = '>= 3.2.2'
   s.summary     = "Air Quality of Major Cities"
   s.description = "Easy to use air quality of major cities. Everything has been parsed for you and ready to use."
   s.authors     = ["FistOfTheNorthStar"]
