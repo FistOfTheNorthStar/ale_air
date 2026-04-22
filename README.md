@@ -1,54 +1,109 @@
-# Easy Air Quality Ruby Gem for Major Cities
+# AleAir — Air Quality for Major Cities
 
-This is an easy to use Gem for your Ruby projects when you wish to add air quality parameters. It uses World Air Quality Projects open api and parses the responses for ease of use. To use it go to [Air Quality Project](aqicn.org) and apply for a token (you will need it).
+[![CI](https://github.com/FistOfTheNorthStar/ale_air/actions/workflows/ci.yml/badge.svg)](https://github.com/FistOfTheNorthStar/ale_air/actions/workflows/ci.yml)
+[![Gem Version](https://badge.fury.io/rb/ale_air.svg)](https://rubygems.org/gems/ale_air)
+
+A small Ruby gem that wraps the [World Air Quality Index](https://aqicn.org) (WAQI) public API and returns parsed, ready-to-use air-quality data for a given city. No external dependencies — just Ruby standard library.
 
 ## Installation
 
-Add this to Gemfile:
+Add to your `Gemfile`:
 
 ```ruby
 gem 'ale_air'
 ```
 
-And then execute:
+Then:
 
-    $ bundle install
- 
-Or
+```sh
+bundle install
+```
 
-    $ gem install ale_air
+Or install directly:
+
+```sh
+gem install ale_air
+```
+
+## Configuration
+
+You need a free WAQI API token. Request one at <https://aqicn.org/data-platform/token/>.
 
 ## Usage
-Add
 
-    require 'ale_air'
+```ruby
+require 'ale_air'
 
-Just initialize first with your token
+client = AleAir::FetchJSON.new('YOUR_TOKEN')
 
-    air_results = AleAir::FetchJSON.new('YOUR_TOKEN')
+if client.air_quality('Helsinki')
+  puts client.descriptive_text
+  # => "Air quality: 42 AQI Good @ Kallio 12:00 +02:00"
+else
+  warn "Lookup failed: #{client.message}"
+end
+```
 
-Now you can get the air quality where you wish. This will return true if succesful and false if some error occured
+### Accessors
 
-    air_results.air_quality('Helsinki')
+After a call to `#air_quality`, the client exposes:
 
-Then you can just use the results
+| Method               | Description                                                          |
+|----------------------|----------------------------------------------------------------------|
+| `status`             | `"ok"` or `"error"`                                                  |
+| `message`            | Human-readable status message or error detail                        |
+| `location`           | Name of the measurement station                                      |
+| `quality`            | Air Quality Index (US-EPA 2016 scale)                                |
+| `time_measured`      | Measurement timestamp with timezone                                  |
+| `danger_level`       | One of: Good, Moderate, Unhealthy for Sensitive Groups, Unhealthy, Very Unhealthy, Hazardous |
+| `descriptive_text`   | Pre-formatted single-line summary                                    |
 
-    air_results.status              -- will return "ok" or "error"
-    air_results.message             -- what kind of error occured
-    air_results.location            -- the measurement station location
-    air_results.quality             -- Air Quality Index scale as defined by the US-EPA 2016
-    air_results.time_measured       -- time of measurement
-    air_results.danger_level        -- level
-    air_results.descriptive_text    -- Ready string with all the info for IRC for example
+### Options
+
+```ruby
+AleAir::FetchJSON.new(
+  'YOUR_TOKEN',
+  base_url: 'https://api.waqi.info', # override for testing
+  open_timeout: 5,                   # seconds
+  read_timeout: 10                   # seconds
+)
+```
+
+### Error handling
+
+`#air_quality` always returns `true` or `false`. On failure, `status` is set to `"error"` and `message` contains the reason:
+
+```ruby
+client = AleAir::FetchJSON.new('bad-token')
+client.air_quality('Helsinki') # => false
+client.status                  # => "error"
+client.message                 # => "Invalid key"
+```
+
+Error classes are also defined under `AleAir::` for callers that prefer to raise:
+`AleAir::Error`, `AleAir::MissingTokenError`, `AleAir::InvalidTokenError`, `AleAir::ApiError`, `AleAir::NetworkError`.
+
 ## Development
 
-Install on locally and start developing. 
+```sh
+bundle install
+bundle exec rspec       # run the test suite
+bundle exec rubocop     # run the linter
+bundle exec rake        # run both (default task)
+```
 
-## License
-
-MIT License.
+Tests use [WebMock](https://github.com/bblimke/webmock) to stub the WAQI API — no real network access is required.
 
 ## Contributing
 
-Report bugs and pull requests on GitHub at https://github.com/FistOfTheNorthStar/ale_air 
+Bug reports and pull requests are welcome on GitHub at <https://github.com/FistOfTheNorthStar/ale_air>.
 
+1. Fork the repo
+2. Create a feature branch
+3. Add tests for your change
+4. Ensure `bundle exec rake` is green
+5. Open a pull request
+
+## License
+
+Released under the [MIT License](LICENSE.txt).

@@ -3,5 +3,5 @@
 --format documentation
 --profile
 --no-fail-fast
---order define
+--order defined
 
